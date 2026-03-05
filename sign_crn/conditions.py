@@ -14,29 +14,29 @@ Uniqueness
 We define matrices that describe an exponential map::
 
     sage: from sign_crn import *
-    sage: S = matrix([[1, 1, 1]])
-    sage: St = matrix([[1, 0, 1]])
+    sage: P = matrix([[1, 1, 1]])
+    sage: Pt = matrix([[1, 0, 1]])
 
 The package uses maximal minors to study injectivity::
 
-    sage: uniqueness_condition(S, St)
+    sage: uniqueness_condition(P, Pt)
     True
 
 Therefore, the map is injective.
 Instead, we can consider the oriented matroids determined by these matrices::
 
     sage: from sign_crn.conditions import uniqueness_condition_sign_vectors
-    sage: uniqueness_condition_sign_vectors(S, St)
+    sage: uniqueness_condition_sign_vectors(P, Pt)
     True
 
 Now, we consider another example::
 
-    sage: S = matrix([[1, 1, 1]])
-    sage: St = matrix([[1, -1, 1]])
+    sage: P = matrix([[1, 1, 1]])
+    sage: Pt = matrix([[1, -1, 1]])
 
 The condition is violated::
 
-    sage: uniqueness_condition(S, St)
+    sage: uniqueness_condition(P, Pt)
     False
 
 Therefore, the corresponding exponential map is not injective.
@@ -45,16 +45,16 @@ Finally, we consider an example with parameters :math:`a, b \in \mathbb{R}`::
 
     sage: var("a, b")
     (a, b)
-    sage: S = matrix([[1, 1, 1]])
-    sage: S
+    sage: P = matrix([[1, 1, 1]])
+    sage: P
     [1 1 1]
-    sage: St = matrix([[a, b, -1]])
-    sage: St
+    sage: Pt = matrix([[a, b, -1]])
+    sage: Pt
     [ a  b -1]
 
 Here, the function returns a system of inequalities::
 
-    sage: uniqueness_condition(S, St) # random order
+    sage: uniqueness_condition(P, Pt) # random order
     [{-a >= 0, -b >= 0}]
 
 Hence, the map is injective if :math:`a, b \leq 0`.
@@ -66,28 +66,28 @@ Existence and uniqueness
 
 We consider the following matrices to describe an exponential map::
 
-    sage: S = matrix([[1, 0, -1, 0], [0, 1, 0, -1]])
-    sage: S
+    sage: P = matrix([[1, 0, -1, 0], [0, 1, 0, -1]])
+    sage: P
     [ 1  0 -1  0]
     [ 0  1  0 -1]
-    sage: St = matrix([[1, 0, -1, 1], [0, 1, -1, 0]])
-    sage: St
+    sage: Pt = matrix([[1, 0, -1, 1], [0, 1, -1, 0]])
+    sage: Pt
     [ 1  0 -1  1]
     [ 0  1 -1  0]
 
 The corresponding map is injective::
 
-    sage: uniqueness_condition(S, St)
+    sage: uniqueness_condition(P, Pt)
     True
 
 To examine bijectivity, we first check the face condition::
 
-    sage: face_condition(S, St)
+    sage: face_condition(P, Pt)
     True
 
 Finally, we apply the degeneracy condition::
 
-    sage: degeneracy_condition(S, St)
+    sage: degeneracy_condition(P, Pt)
     False
 
 Hence, the exponential map is bijective.
@@ -95,16 +95,16 @@ Hence, the exponential map is bijective.
 Let us consider another example.
 We swap the two matrices from before::
 
-    sage: S, St = St, S
+    sage: P, Pt = Pt, P
 
 Because of symmetry, the map is injective::
 
-    sage: uniqueness_condition_sign_vectors(S, St)
+    sage: uniqueness_condition_sign_vectors(P, Pt)
     True
 
 The face condition is violated::
 
-    sage: face_condition(S, St)
+    sage: face_condition(P, Pt)
     False
 
 Consequently, the map is not bijective.
@@ -115,13 +115,13 @@ Now, we consider a map involving a parameter.
     sage: var("a")
     a
     sage: assume(a > 0)
-    sage: S = matrix([[1, 0, 0, 0, 0, 1], [0, 1, 0, 0, 0, -1], [0, 0, 1, 1, 2, 0]])
-    sage: S
+    sage: P = matrix([[1, 0, 0, 0, 0, 1], [0, 1, 0, 0, 0, -1], [0, 0, 1, 1, 2, 0]])
+    sage: P
     [ 1  0  0  0  0  1]
     [ 0  1  0  0  0 -1]
     [ 0  0  1  1  2  0]
-    sage: St = matrix([[-1, -1, 0, 0, -2, 0], [0, 0, 1, 1, 0, 0], [0, 0, 0, 0, a, 1]])
-    sage: St
+    sage: Pt = matrix([[-1, -1, 0, 0, -2, 0], [0, 0, 1, 1, 0, 0], [0, 0, 0, 0, a, 1]])
+    sage: Pt
     [-1 -1  0  0 -2  0]
     [ 0  0  1  1  0  0]
     [ 0  0  0  0  a  1]
@@ -129,13 +129,13 @@ Now, we consider a map involving a parameter.
 The first two conditions depend on the sign vectors corresponding
 to the rows of these matrices which are independent of the specific value for :math:`a`::
 
-    sage: uniqueness_condition_sign_vectors(S, St)
+    sage: uniqueness_condition_sign_vectors(P, Pt)
     True
 
 Hence, the map is injective.
 Also the face condition is satisfied::
 
-    sage: face_condition(S, St)
+    sage: face_condition(P, Pt)
     True
 
 For specific values of :math:`a`, the pair of subspaces
@@ -143,29 +143,29 @@ determined by kernels of the matrices is nondegenerate.
 This is exactly the case for :math:`a \in (0, 1) \cup (1, 2)`.
 We demonstrate this for specific values::
 
-    sage: degeneracy_condition(S, St(a=1/2))
+    sage: degeneracy_condition(P, Pt(a=1/2))
     False
-    sage: degeneracy_condition(S, St(a=3/2))
+    sage: degeneracy_condition(P, Pt(a=3/2))
     False
 
 On the other hand, this condition does not hold if
-:math:`a \in {1} \cup [2, \infty)`::
+:math:`a \in \{1\} \cup [2, \infty)`::
 
-    sage: degeneracy_condition(S, St(a=1))
+    sage: degeneracy_condition(P, Pt(a=1))
     True
 
 To certify the result, we call::
 
-    sage: degeneracy_condition(S, St(a=1), certify=True)
+    sage: degeneracy_condition(P, Pt(a=1), certify=True)
     (True, (1, 1, 0, 0, -1, 1))
 
-Hence, the positive support of the vector ``v = (1, 1, 0, 0, -1, 1)`` of ``St``
-can be covered by a sign vector ``(++000+)`` corresponding to ``ker(S)``.
+Hence, the positive support of the vector ``v = (1, 1, 0, 0, -1, 1)`` of ``Pt``
+can be covered by a sign vector ``(++000+)`` corresponding to ``ker(P)``.
 Further, ``v`` does not satisfy the support condition::
 
-    sage: degeneracy_condition(S, St(a=2))
+    sage: degeneracy_condition(P, Pt(a=2))
     True
-    sage: degeneracy_condition(S, St(a=3))
+    sage: degeneracy_condition(P, Pt(a=3))
     True
 
 Robustness of existence and uniqueness
@@ -173,42 +173,42 @@ Robustness of existence and uniqueness
 
 We consider the following matrices::
 
-    sage: S = matrix([[1, 0, 1, 0], [0, 0, 0, 1]])
-    sage: S
+    sage: P = matrix([[1, 0, 1, 0], [0, 0, 0, 1]])
+    sage: P
     [1 0 1 0]
     [0 0 0 1]
-    sage: St = matrix([[1, 0, 1, 1], [0, 1, 0, -1]])
-    sage: St
+    sage: Pt = matrix([[1, 0, 1, 1], [0, 1, 0, -1]])
+    sage: Pt
     [ 1  0  1  1]
     [ 0  1  0 -1]
 
 To study robustness of the corresponding map,
 we consider again a condition involving maximal minors::
 
-    sage: closure_condition(S, St)
+    sage: closure_condition(P, Pt)
     True
 
-Hence, the map is bijective for small perturbations of ``St``.
+Hence, the map is bijective for small perturbations of ``Pt``.
 There is also an equivalent condition using sign vectors::
 
     sage: from sign_crn.conditions import closure_condition_sign_vectors
-    sage: closure_condition_sign_vectors(S, St)
+    sage: closure_condition_sign_vectors(P, Pt)
     True
 
 Now, we consider an example involving parameters::
 
     sage: var("a, b, c")
     (a, b, c)
-    sage: S = matrix([[c, 1, c]])
-    sage: S
+    sage: P = matrix([[c, 1, c]])
+    sage: P
     [c 1 c]
-    sage: St = matrix([[a, b, -1]])
-    sage: St
+    sage: Pt = matrix([[a, b, -1]])
+    sage: Pt
     [ a  b -1]
 
 We obtain the following condition on the variables::
 
-    sage: closure_condition(S, St) # random
+    sage: closure_condition(P, Pt) # random
     [{-b > 0, c == 0},
      {-b < 0, c == 0},
      {-b > 0, c > 0, -a*c > 0},
@@ -267,23 +267,23 @@ def uniqueness_condition_sign_vectors(stoichiometric_matrix: Matrix, kinetic_ord
     EXAMPLES::
 
         sage: from sign_crn.conditions import uniqueness_condition_sign_vectors
-        sage: S = matrix([[1, 1, 1]])
-        sage: S
+        sage: P = matrix([[1, 1, 1]])
+        sage: P
         [1 1 1]
-        sage: St = matrix([[1, 0, 1]])
-        sage: St
+        sage: Pt = matrix([[1, 0, 1]])
+        sage: Pt
         [1 0 1]
-        sage: uniqueness_condition_sign_vectors(S, St)
+        sage: uniqueness_condition_sign_vectors(P, Pt)
         True
-        sage: S = matrix([[1, 0, -1], [0, 1, -1]])
-        sage: S
+        sage: P = matrix([[1, 0, -1], [0, 1, -1]])
+        sage: P
         [ 1  0 -1]
         [ 0  1 -1]
-        sage: St = matrix([[1, 0, -1], [0, 1, 1]])
-        sage: St
+        sage: Pt = matrix([[1, 0, -1], [0, 1, 1]])
+        sage: Pt
         [ 1  0 -1]
         [ 0  1  1]
-        sage: uniqueness_condition_sign_vectors(S, St)
+        sage: uniqueness_condition_sign_vectors(P, Pt)
         False
 
     TESTS::
@@ -327,23 +327,23 @@ def uniqueness_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
         sage: from sign_crn import *
         sage: var("a, b")
         (a, b)
-        sage: S = matrix([[1, 0, -1], [0, 1, -1]])
-        sage: S
+        sage: P = matrix([[1, 0, -1], [0, 1, -1]])
+        sage: P
         [ 1  0 -1]
         [ 0  1 -1]
-        sage: St = matrix([[1, 0, a], [0, 1, b]])
-        sage: St
+        sage: Pt = matrix([[1, 0, a], [0, 1, b]])
+        sage: Pt
         [1 0 a]
         [0 1 b]
-        sage: uniqueness_condition(S, St) # random order
+        sage: uniqueness_condition(P, Pt) # random order
         [{-a >= 0, -b >= 0}]
-        sage: conditions = uniqueness_condition(S, St)[0]
+        sage: conditions = uniqueness_condition(P, Pt)[0]
         sage: conditions # random order
         sage: (-a >= 0) in conditions and (-b >= 0) in conditions
         True
-        sage: S = matrix([[a, 0, 1, 0], [0, 1, -1, 0], [0, 0, 0, 1]])
-        sage: St = matrix([[1, 0, 0, -1], [0, b, 1, 1], [0, 0, a, 1]])
-        sage: uniqueness_condition(S, St) # random order
+        sage: P = matrix([[a, 0, 1, 0], [0, 1, -1, 0], [0, 0, 0, 1]])
+        sage: Pt = matrix([[1, 0, 0, -1], [0, b, 1, 1], [0, 0, a, 1]])
+        sage: uniqueness_condition(P, Pt) # random order
         [{(a - 1)*a >= 0, a*b >= 0}, {(a - 1)*a <= 0, a*b <= 0}]
         sage: len(_), len(_[0])
         (2, 2)
@@ -412,44 +412,44 @@ def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
     We consider the following matrices::
 
         sage: from sign_crn import *
-        sage: S = matrix([[1, 0, -1, 0], [0, 1, 0, -1]])
-        sage: St = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
-        sage: degeneracy_condition(S, St)
+        sage: P = matrix([[1, 0, -1, 0], [0, 1, 0, -1]])
+        sage: Pt = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
+        sage: degeneracy_condition(P, Pt)
         False
 
     Next, we certify the result.
     The corresponding subspaces are trivially nondegenerate
-    since there are no nonnegative covectors in the kernel of ``S``::
+    since there are no nonnegative covectors in the kernel of ``P``::
 
-        sage: degeneracy_condition(S, St, certify=True)
+        sage: degeneracy_condition(P, Pt, certify=True)
         (False, 'no nonnegative covectors')
 
     Now, we consider an example of degenerate subspaces::
 
-        sage: S = matrix([[1, 1, 0]])
-        sage: St = matrix([[0, 0, 1]])
-        sage: degeneracy_condition(S, St, certify=True)
+        sage: P = matrix([[1, 1, 0]])
+        sage: Pt = matrix([[0, 0, 1]])
+        sage: degeneracy_condition(P, Pt, certify=True)
         (True, (1, 1, 0))
 
-    The resulting vector lies in the row space of ``St``.
-    The nonnegative covector ``(++0)`` in the kernel of ``S`` covers the first two equal components.
+    The resulting vector lies in the row space of ``Pt``.
+    The nonnegative covector ``(++0)`` in the kernel of ``P`` covers the first two equal components.
 
     We have another example for nondegenerate subspaces::
 
-        sage: S = matrix([[1, 0, 0, 1, -1], [0, 1, 0, 1, -1], [0, 0, 1, 0, 1]])
-        sage: S
+        sage: P = matrix([[1, 0, 0, 1, -1], [0, 1, 0, 1, -1], [0, 0, 1, 0, 1]])
+        sage: P
         [ 1  0  0  1 -1]
         [ 0  1  0  1 -1]
         [ 0  0  1  0  1]
-        sage: St = matrix([[1, 0, 0, 1, -1], [0, 1, 0, 1, -1], [0, 0, 1, 0, -1]])
-        sage: St
+        sage: Pt = matrix([[1, 0, 0, 1, -1], [0, 1, 0, 1, -1], [0, 0, 1, 0, -1]])
+        sage: Pt
         [ 1  0  0  1 -1]
         [ 0  1  0  1 -1]
         [ 0  0  1  0 -1]
-        sage: degeneracy_condition(S, St, certify=True)
+        sage: degeneracy_condition(P, Pt, certify=True)
         (False, ([[[1, 2, 3]], [[0, 2, 3]]], [[[2, 4]]], []))
 
-    The certificate tells us that there is no vector in the row space of ``St``
+    The certificate tells us that there is no vector in the row space of ``Pt``
     with positive support on the components ``0, 2, 3`` and ``1, 2, 3``.
     Positive equal components can partially be covered by a covector ``(00+0+)``
     which corresponds to ``[[2, 4]]``.
@@ -457,12 +457,12 @@ def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
 
     In the next example, there exists a partial cover::
 
-        sage: S = matrix([[1, -1, 0, 0], [0, 0, 1, 1]])
-        sage: St = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
-        sage: degeneracy_condition(S, St, certify=True)
+        sage: P = matrix([[1, -1, 0, 0], [0, 0, 1, 1]])
+        sage: Pt = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
+        sage: degeneracy_condition(P, Pt, certify=True)
         (False, ([], [[[2, 3]]], [[[[2, 3]], [(--++)]]]))
 
-    In fact, a vector in ``St`` with equal positive components on ``[2, 3]``
+    In fact, a vector in ``Pt`` with equal positive components on ``[2, 3]``
     corresponding to ``(--++)`` can be fully covered by covectors.
     However, this vector would not satisfy the support condition.
     """
@@ -495,7 +495,7 @@ def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
     def recursive_degenerate(
         non_negative_cocircuits: set[SignVector],
         matrix_old: Matrix,
-        indices: list[int],
+        positive_components: list[int],
         lower_bounds: list[int],
         upper_bounds: list[int]
     ):
@@ -520,7 +520,7 @@ def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
                 upper_bounds_new[i] = Infinity
 
             intervals = Intervals.from_bounds(lower_bounds_new, upper_bounds_new)
-            indices_new = indices + [cocircuit.support()]
+            indices_new = positive_components + [cocircuit.support()]
             matrix_new = Matrix(
                 matrix_old.rows() + equal_entries_lists(length, cocircuit.support())
             ).echelon_form()
