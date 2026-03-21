@@ -14,29 +14,29 @@ Uniqueness
 We define matrices that describe an exponential map::
 
     sage: from sign_crn import *
-    sage: P = matrix([[1, 1, 1]])
-    sage: Pt = matrix([[1, 0, 1]])
+    sage: Q = matrix([[1, 1, 1]])
+    sage: Qt = matrix([[1, 0, 1]])
 
 The package uses maximal minors to study injectivity::
 
-    sage: uniqueness_condition(P, Pt)
+    sage: uniqueness_condition(Q, Qt)
     True
 
 Therefore, the map is injective.
 Instead, we can consider the oriented matroids determined by these matrices::
 
     sage: from sign_crn.conditions import uniqueness_condition_sign_vectors
-    sage: uniqueness_condition_sign_vectors(P, Pt)
+    sage: uniqueness_condition_sign_vectors(Q, Qt)
     True
 
 Now, we consider another example::
 
-    sage: P = matrix([[1, 1, 1]])
-    sage: Pt = matrix([[1, -1, 1]])
+    sage: Q = matrix([[1, 1, 1]])
+    sage: Qt = matrix([[1, -1, 1]])
 
 The condition is violated::
 
-    sage: uniqueness_condition(P, Pt)
+    sage: uniqueness_condition(Q, Qt)
     False
 
 Therefore, the corresponding exponential map is not injective.
@@ -45,16 +45,16 @@ Finally, we consider an example with parameters :math:`a, b \in \mathbb{R}`::
 
     sage: var("a, b")
     (a, b)
-    sage: P = matrix([[1, 1, 1]])
-    sage: P
+    sage: Q = matrix([[1, 1, 1]])
+    sage: Q
     [1 1 1]
-    sage: Pt = matrix([[a, b, -1]])
-    sage: Pt
+    sage: Qt = matrix([[a, b, -1]])
+    sage: Qt
     [ a  b -1]
 
 Here, the function returns a system of inequalities::
 
-    sage: uniqueness_condition(P, Pt) # random order
+    sage: uniqueness_condition(Q, Qt) # random order
     [{-a >= 0, -b >= 0}]
 
 Hence, the map is injective if :math:`a, b \leq 0`.
@@ -66,28 +66,28 @@ Existence and uniqueness
 
 We consider the following matrices to describe an exponential map::
 
-    sage: P = matrix([[1, 0, -1, 0], [0, 1, 0, -1]])
-    sage: P
+    sage: Q = matrix([[1, 0, -1, 0], [0, 1, 0, -1]])
+    sage: Q
     [ 1  0 -1  0]
     [ 0  1  0 -1]
-    sage: Pt = matrix([[1, 0, -1, 1], [0, 1, -1, 0]])
-    sage: Pt
+    sage: Qt = matrix([[1, 0, -1, 1], [0, 1, -1, 0]])
+    sage: Qt
     [ 1  0 -1  1]
     [ 0  1 -1  0]
 
 The corresponding map is injective::
 
-    sage: uniqueness_condition(P, Pt)
+    sage: uniqueness_condition(Q, Qt)
     True
 
 To examine bijectivity, we first check the face condition::
 
-    sage: face_condition(P, Pt)
+    sage: face_condition(Q, Qt)
     True
 
 Finally, we check the nondegeneracy condition::
 
-    sage: nondegeneracy_condition(P, Pt)
+    sage: nondegeneracy_condition(Q, Qt)
     True
 
 Hence, the exponential map is bijective.
@@ -95,16 +95,17 @@ Hence, the exponential map is bijective.
 Let us consider another example.
 We swap the two matrices from before::
 
-    sage: P, Pt = Pt, P
+    sage: Q, Qt = Qt, Q
 
-Because of symmetry, the map is injective::
+The uniqueness condition is symmetric in the two matrices.
+Therefore, the map is injective::
 
-    sage: uniqueness_condition_sign_vectors(P, Pt)
+    sage: uniqueness_condition(Q, Qt)
     True
 
-The face condition is violated::
+However, the face condition is violated::
 
-    sage: face_condition(P, Pt)
+    sage: face_condition(Q, Qt)
     False
 
 Consequently, the map is not bijective.
@@ -115,13 +116,13 @@ Now, we consider a map involving a parameter.
     sage: var("a")
     a
     sage: assume(a > 0)
-    sage: P = matrix([[1, 0, 0, 0, 0, 1], [0, 1, 0, 0, 0, -1], [0, 0, 1, 1, 2, 0]])
-    sage: P
+    sage: Q = matrix([[1, 0, 0, 0, 0, 1], [0, 1, 0, 0, 0, -1], [0, 0, 1, 1, 2, 0]])
+    sage: Q
     [ 1  0  0  0  0  1]
     [ 0  1  0  0  0 -1]
     [ 0  0  1  1  2  0]
-    sage: Pt = matrix([[-1, -1, 0, 0, -2, 0], [0, 0, 1, 1, 0, 0], [0, 0, 0, 0, a, 1]])
-    sage: Pt
+    sage: Qt = matrix([[-1, -1, 0, 0, -2, 0], [0, 0, 1, 1, 0, 0], [0, 0, 0, 0, a, 1]])
+    sage: Qt
     [-1 -1  0  0 -2  0]
     [ 0  0  1  1  0  0]
     [ 0  0  0  0  a  1]
@@ -129,13 +130,13 @@ Now, we consider a map involving a parameter.
 The first two conditions depend on the sign vectors corresponding
 to the rows of these matrices which are independent of the specific value for :math:`a`::
 
-    sage: uniqueness_condition_sign_vectors(P, Pt)
+    sage: uniqueness_condition(Q, Qt)
     True
 
 Hence, the map is injective.
 Also the face condition is satisfied::
 
-    sage: face_condition(P, Pt)
+    sage: face_condition(Q, Qt)
     True
 
 For specific values of :math:`a`, the pair of subspaces
@@ -143,29 +144,29 @@ determined by kernels of the matrices is nondegenerate.
 This is exactly the case for :math:`a \in (0, 1) \cup (1, 2)`.
 We demonstrate this for specific values::
 
-    sage: nondegeneracy_condition(P, Pt(a=1/2))
+    sage: nondegeneracy_condition(Q, Qt(a=1/2))
     True
-    sage: nondegeneracy_condition(P, Pt(a=3/2))
+    sage: nondegeneracy_condition(Q, Qt(a=3/2))
     True
 
 On the other hand, this condition does not hold if
 :math:`a \in \{1\} \cup [2, \infty)`::
 
-    sage: nondegeneracy_condition(P, Pt(a=1))
+    sage: nondegeneracy_condition(Q, Qt(a=1))
     False
 
 To certify the result, we call::
 
-    sage: nondegeneracy_condition(P, Pt(a=1), certify=True)
+    sage: nondegeneracy_condition(Q, Qt(a=1), certify=True)
     (False, (1, 1, 0, 0, -1, 1))
 
-Hence, the positive support of the vector ``v = (1, 1, 0, 0, -1, 1)`` of ``Pt``
-can be covered by a sign vector ``(++000+)`` corresponding to ``ker(P)``.
+Hence, the positive support of the vector ``v = (1, 1, 0, 0, -1, 1)`` of ``Qt``
+can be covered by a sign vector ``(++000+)`` corresponding to ``ker(Q)``.
 Further, ``v`` does not satisfy the support condition::
 
-    sage: nondegeneracy_condition(P, Pt(a=2))
+    sage: nondegeneracy_condition(Q, Qt(a=2))
     False
-    sage: nondegeneracy_condition(P, Pt(a=3))
+    sage: nondegeneracy_condition(Q, Qt(a=3))
     False
 
 Robustness of existence and uniqueness
@@ -173,42 +174,42 @@ Robustness of existence and uniqueness
 
 We consider the following matrices::
 
-    sage: P = matrix([[1, 0, 1, 0], [0, 0, 0, 1]])
-    sage: P
+    sage: Q = matrix([[1, 0, 1, 0], [0, 0, 0, 1]])
+    sage: Q
     [1 0 1 0]
     [0 0 0 1]
-    sage: Pt = matrix([[1, 0, 1, 1], [0, 1, 0, -1]])
-    sage: Pt
+    sage: Qt = matrix([[1, 0, 1, 1], [0, 1, 0, -1]])
+    sage: Qt
     [ 1  0  1  1]
     [ 0  1  0 -1]
 
 To study robustness of the corresponding map,
 we consider again a condition involving maximal minors::
 
-    sage: closure_condition(P, Pt)
+    sage: closure_condition(Q, Qt)
     True
 
-Hence, the map is bijective for small perturbations of ``Pt``.
+Hence, the map is bijective for small perturbations of ``Qt``.
 There is also an equivalent condition using sign vectors::
 
     sage: from sign_crn.conditions import closure_condition_sign_vectors
-    sage: closure_condition_sign_vectors(P, Pt)
+    sage: closure_condition_sign_vectors(Q, Qt)
     True
 
 Now, we consider an example involving parameters::
 
     sage: var("a, b, c")
     (a, b, c)
-    sage: P = matrix([[c, 1, c]])
-    sage: P
+    sage: Q = matrix([[c, 1, c]])
+    sage: Q
     [c 1 c]
-    sage: Pt = matrix([[a, b, -1]])
-    sage: Pt
+    sage: Qt = matrix([[a, b, -1]])
+    sage: Qt
     [ a  b -1]
 
 We obtain the following condition on the variables::
 
-    sage: closure_condition(P, Pt) # random
+    sage: closure_condition(Q, Qt) # random
     [{-b > 0, c == 0},
      {-b < 0, c == 0},
      {-b > 0, c > 0, -a*c > 0},
@@ -267,23 +268,23 @@ def uniqueness_condition_sign_vectors(stoichiometric_matrix: Matrix, kinetic_ord
     EXAMPLES::
 
         sage: from sign_crn.conditions import uniqueness_condition_sign_vectors
-        sage: P = matrix([[1, 1, 1]])
-        sage: P
+        sage: Q = matrix([[1, 1, 1]])
+        sage: Q
         [1 1 1]
-        sage: Pt = matrix([[1, 0, 1]])
-        sage: Pt
+        sage: Qt = matrix([[1, 0, 1]])
+        sage: Qt
         [1 0 1]
-        sage: uniqueness_condition_sign_vectors(P, Pt)
+        sage: uniqueness_condition_sign_vectors(Q, Qt)
         True
-        sage: P = matrix([[1, 0, -1], [0, 1, -1]])
-        sage: P
+        sage: Q = matrix([[1, 0, -1], [0, 1, -1]])
+        sage: Q
         [ 1  0 -1]
         [ 0  1 -1]
-        sage: Pt = matrix([[1, 0, -1], [0, 1, 1]])
-        sage: Pt
+        sage: Qt = matrix([[1, 0, -1], [0, 1, 1]])
+        sage: Qt
         [ 1  0 -1]
         [ 0  1  1]
-        sage: uniqueness_condition_sign_vectors(P, Pt)
+        sage: uniqueness_condition_sign_vectors(Q, Qt)
         False
 
     TESTS::
@@ -327,23 +328,23 @@ def uniqueness_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
         sage: from sign_crn import *
         sage: var("a, b")
         (a, b)
-        sage: P = matrix([[1, 0, -1], [0, 1, -1]])
-        sage: P
+        sage: Q = matrix([[1, 0, -1], [0, 1, -1]])
+        sage: Q
         [ 1  0 -1]
         [ 0  1 -1]
-        sage: Pt = matrix([[1, 0, a], [0, 1, b]])
-        sage: Pt
+        sage: Qt = matrix([[1, 0, a], [0, 1, b]])
+        sage: Qt
         [1 0 a]
         [0 1 b]
-        sage: uniqueness_condition(P, Pt) # random order
+        sage: uniqueness_condition(Q, Qt) # random order
         [{-a >= 0, -b >= 0}]
-        sage: conditions = uniqueness_condition(P, Pt)[0]
+        sage: conditions = uniqueness_condition(Q, Qt)[0]
         sage: conditions # random order
         sage: (-a >= 0) in conditions and (-b >= 0) in conditions
         True
-        sage: P = matrix([[a, 0, 1, 0], [0, 1, -1, 0], [0, 0, 0, 1]])
-        sage: Pt = matrix([[1, 0, 0, -1], [0, b, 1, 1], [0, 0, a, 1]])
-        sage: uniqueness_condition(P, Pt) # random order
+        sage: Q = matrix([[a, 0, 1, 0], [0, 1, -1, 0], [0, 0, 0, 1]])
+        sage: Qt = matrix([[1, 0, 0, -1], [0, b, 1, 1], [0, 0, a, 1]])
+        sage: uniqueness_condition(Q, Qt) # random order
         [{(a - 1)*a >= 0, a*b >= 0}, {(a - 1)*a <= 0, a*b <= 0}]
         sage: len(_), len(_[0])
         (2, 2)
@@ -412,44 +413,44 @@ def nondegeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix:
     We consider the following matrices::
 
         sage: from sign_crn import *
-        sage: P = matrix([[1, 0, -1, 0], [0, 1, 0, -1]])
-        sage: Pt = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
-        sage: nondegeneracy_condition(P, Pt)
+        sage: Q = matrix([[1, 0, -1, 0], [0, 1, 0, -1]])
+        sage: Qt = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
+        sage: nondegeneracy_condition(Q, Qt)
         True
 
     Next, we certify the result.
     The corresponding subspaces are trivially nondegenerate
-    since there are no nonnegative covectors in the kernel of ``P``::
+    since there are no nonnegative covectors in the kernel of ``Q``::
 
-        sage: nondegeneracy_condition(P, Pt, certify=True)
+        sage: nondegeneracy_condition(Q, Qt, certify=True)
         (True, 'no nonnegative covectors')
 
     Now, we consider an example of degenerate subspaces::
 
-        sage: P = matrix([[1, 1, 0]])
-        sage: Pt = matrix([[0, 0, 1]])
-        sage: nondegeneracy_condition(P, Pt, certify=True)
+        sage: Q = matrix([[1, 1, 0]])
+        sage: Qt = matrix([[0, 0, 1]])
+        sage: nondegeneracy_condition(Q, Qt, certify=True)
         (False, (1, 1, 0))
 
-    The resulting vector lies in the row space of ``Pt``.
-    The nonnegative covector ``(++0)`` in the kernel of ``P`` covers the first two equal components.
+    The resulting vector lies in the row space of ``Qt``.
+    The nonnegative covector ``(++0)`` in the kernel of ``Q`` covers the first two equal components.
 
     We have another example for nondegenerate subspaces::
 
-        sage: P = matrix([[1, 0, 0, 1, -1], [0, 1, 0, 1, -1], [0, 0, 1, 0, 1]])
-        sage: P
+        sage: Q = matrix([[1, 0, 0, 1, -1], [0, 1, 0, 1, -1], [0, 0, 1, 0, 1]])
+        sage: Q
         [ 1  0  0  1 -1]
         [ 0  1  0  1 -1]
         [ 0  0  1  0  1]
-        sage: Pt = matrix([[1, 0, 0, 1, -1], [0, 1, 0, 1, -1], [0, 0, 1, 0, -1]])
-        sage: Pt
+        sage: Qt = matrix([[1, 0, 0, 1, -1], [0, 1, 0, 1, -1], [0, 0, 1, 0, -1]])
+        sage: Qt
         [ 1  0  0  1 -1]
         [ 0  1  0  1 -1]
         [ 0  0  1  0 -1]
-        sage: nondegeneracy_condition(P, Pt, certify=True)
+        sage: nondegeneracy_condition(Q, Qt, certify=True)
         (True, ([[[1, 2, 3]], [[0, 2, 3]]], [[[2, 4]]], []))
 
-    The certificate tells us that there is no vector in the row space of ``Pt``
+    The certificate tells us that there is no vector in the row space of ``Qt``
     with positive support on the components ``0, 2, 3`` and ``1, 2, 3``.
     Positive equal components can partially be covered by a covector ``(00+0+)``
     which corresponds to ``[[2, 4]]``.
@@ -457,12 +458,12 @@ def nondegeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix:
 
     In the next example, there exists a partial cover::
 
-        sage: P = matrix([[1, -1, 0, 0], [0, 0, 1, 1]])
-        sage: Pt = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
-        sage: nondegeneracy_condition(P, Pt, certify=True)
+        sage: Q = matrix([[1, -1, 0, 0], [0, 0, 1, 1]])
+        sage: Qt = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
+        sage: nondegeneracy_condition(Q, Qt, certify=True)
         (True, ([], [[[2, 3]]], [[[[2, 3]], [(--++)]]]))
 
-    In fact, a vector in ``Pt`` with equal positive components on ``[2, 3]``
+    In fact, a vector in ``Qt`` with equal positive components on ``[2, 3]``
     corresponding to ``(--++)`` can be fully covered by covectors.
     However, this vector would not satisfy the support condition.
     """
