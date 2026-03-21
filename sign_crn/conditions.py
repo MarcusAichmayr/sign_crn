@@ -85,10 +85,10 @@ To examine bijectivity, we first check the face condition::
     sage: face_condition(P, Pt)
     True
 
-Finally, we apply the degeneracy condition::
+Finally, we check the nondegeneracy condition::
 
-    sage: degeneracy_condition(P, Pt)
-    False
+    sage: nondegeneracy_condition(P, Pt)
+    True
 
 Hence, the exponential map is bijective.
 
@@ -143,30 +143,30 @@ determined by kernels of the matrices is nondegenerate.
 This is exactly the case for :math:`a \in (0, 1) \cup (1, 2)`.
 We demonstrate this for specific values::
 
-    sage: degeneracy_condition(P, Pt(a=1/2))
-    False
-    sage: degeneracy_condition(P, Pt(a=3/2))
-    False
+    sage: nondegeneracy_condition(P, Pt(a=1/2))
+    True
+    sage: nondegeneracy_condition(P, Pt(a=3/2))
+    True
 
 On the other hand, this condition does not hold if
 :math:`a \in \{1\} \cup [2, \infty)`::
 
-    sage: degeneracy_condition(P, Pt(a=1))
-    True
+    sage: nondegeneracy_condition(P, Pt(a=1))
+    False
 
 To certify the result, we call::
 
-    sage: degeneracy_condition(P, Pt(a=1), certify=True)
-    (True, (1, 1, 0, 0, -1, 1))
+    sage: nondegeneracy_condition(P, Pt(a=1), certify=True)
+    (False, (1, 1, 0, 0, -1, 1))
 
 Hence, the positive support of the vector ``v = (1, 1, 0, 0, -1, 1)`` of ``Pt``
 can be covered by a sign vector ``(++000+)`` corresponding to ``ker(P)``.
 Further, ``v`` does not satisfy the support condition::
 
-    sage: degeneracy_condition(P, Pt(a=2))
-    True
-    sage: degeneracy_condition(P, Pt(a=3))
-    True
+    sage: nondegeneracy_condition(P, Pt(a=2))
+    False
+    sage: nondegeneracy_condition(P, Pt(a=3))
+    False
 
 Robustness of existence and uniqueness
 --------------------------------------
@@ -397,9 +397,9 @@ def face_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Matrix) 
     return True
 
 
-def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Matrix, certify: bool = False) -> bool:
+def nondegeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Matrix, certify: bool = False) -> bool:
     r"""
-    Degeneracy condition for unique existence.
+    Nondegeneracy condition for unique existence.
 
     This condition is about whether all positive equal components of a vector
     can be covered by nonnegative cocircuits.
@@ -414,22 +414,22 @@ def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
         sage: from sign_crn import *
         sage: P = matrix([[1, 0, -1, 0], [0, 1, 0, -1]])
         sage: Pt = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
-        sage: degeneracy_condition(P, Pt)
-        False
+        sage: nondegeneracy_condition(P, Pt)
+        True
 
     Next, we certify the result.
     The corresponding subspaces are trivially nondegenerate
     since there are no nonnegative covectors in the kernel of ``P``::
 
-        sage: degeneracy_condition(P, Pt, certify=True)
-        (False, 'no nonnegative covectors')
+        sage: nondegeneracy_condition(P, Pt, certify=True)
+        (True, 'no nonnegative covectors')
 
     Now, we consider an example of degenerate subspaces::
 
         sage: P = matrix([[1, 1, 0]])
         sage: Pt = matrix([[0, 0, 1]])
-        sage: degeneracy_condition(P, Pt, certify=True)
-        (True, (1, 1, 0))
+        sage: nondegeneracy_condition(P, Pt, certify=True)
+        (False, (1, 1, 0))
 
     The resulting vector lies in the row space of ``Pt``.
     The nonnegative covector ``(++0)`` in the kernel of ``P`` covers the first two equal components.
@@ -446,8 +446,8 @@ def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
         [ 1  0  0  1 -1]
         [ 0  1  0  1 -1]
         [ 0  0  1  0 -1]
-        sage: degeneracy_condition(P, Pt, certify=True)
-        (False, ([[[1, 2, 3]], [[0, 2, 3]]], [[[2, 4]]], []))
+        sage: nondegeneracy_condition(P, Pt, certify=True)
+        (True, ([[[1, 2, 3]], [[0, 2, 3]]], [[[2, 4]]], []))
 
     The certificate tells us that there is no vector in the row space of ``Pt``
     with positive support on the components ``0, 2, 3`` and ``1, 2, 3``.
@@ -459,8 +459,8 @@ def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
 
         sage: P = matrix([[1, -1, 0, 0], [0, 0, 1, 1]])
         sage: Pt = matrix([[1, 0, 0, 1], [0, 1, 0, 1]])
-        sage: degeneracy_condition(P, Pt, certify=True)
-        (False, ([], [[[2, 3]]], [[[[2, 3]], [(--++)]]]))
+        sage: nondegeneracy_condition(P, Pt, certify=True)
+        (True, ([], [[[2, 3]]], [[[[2, 3]], [(--++)]]]))
 
     In fact, a vector in ``Pt`` with equal positive components on ``[2, 3]``
     corresponding to ``(--++)`` can be fully covered by covectors.
@@ -472,8 +472,8 @@ def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
 
     if not non_negative_cocircuits:
         if certify:
-            return False, "no nonnegative covectors"
-        return False
+            return True, "no nonnegative covectors"
+        return True
 
     non_negative_cocircuits = sorted(non_negative_cocircuits, key=lambda covector: len(covector.support()))
     length = kinetic_order_matrix.ncols()
@@ -574,13 +574,13 @@ def degeneracy_condition(stoichiometric_matrix: Matrix, kinetic_order_matrix: Ma
 
     if certify:
         if degenerate:
-            return degenerate, certificate
-        return degenerate, (
+            return not degenerate, certificate
+        return not degenerate, (
             certificates_zero_equal_components,
             certificates_partial_cover,
             certificate_support_condition,
         )
-    return degenerate
+    return not degenerate
 
 
 def closure_condition_sign_vectors(stoichiometric_matrix: Matrix, kinetic_order_matrix: Matrix) -> bool:
