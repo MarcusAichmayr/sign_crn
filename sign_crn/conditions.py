@@ -6,7 +6,7 @@ We consider polynomial and exponential maps given by two matrices as in [MHR19]_
 and study conditions for injectivity, bijectivity and robustness.
 
 These matrices also describe a chemical reaction network.
-In this context, the conditions are equivalent to conditions for positive complex-balanced equilibria (CBE).
+In this context, the conditions are equivalent to conditions for existence and uniqueness of positive complex-balanced equilibria (CBE).
 
 Uniqueness
 ----------
