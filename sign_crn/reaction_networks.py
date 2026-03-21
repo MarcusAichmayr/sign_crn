@@ -64,7 +64,7 @@ from sage.misc.misc_c import prod
 from elementary_vectors import circuit_kernel_matrix
 from sign_vectors import sign_vector
 
-from .conditions import uniqueness_condition, face_condition, nondegeneracy_condition, closure_condition
+from .conditions import ConditionsCRN, uniqueness_condition
 from .utility import non_negative_covectors_from_matrix, non_negative_vectors_from_matrix
 
 
@@ -626,6 +626,8 @@ class ReactionNetwork(SageObject):
         self._deficiency_stoichiometric: int = 0
         self._deficiency_kinetic_order: int = 0
 
+        self._conditions = None
+
     def _repr_(self) -> str:
         return f"Reaction network with {self.graph.num_verts()} complexes, {self.graph.num_edges()} reactions and {len(self.species)} species."
 
@@ -822,6 +824,10 @@ class ReactionNetwork(SageObject):
         self._update_species()
         self._update_matrices()
         self._compute_deficiencies()
+        self._conditions = ConditionsCRN.from_reduced_matrices(
+            self._stoichiometric_matrix_reduced,
+            self._kinetic_order_matrix_reduced
+        )
         self._update_needed = False
 
     def _update_species(self) -> None:
@@ -974,7 +980,7 @@ class ReactionNetwork(SageObject):
         for all rate constants and for all small perturbations of the kinetic orders.
         """
         self._check_network_conditions()
-        return closure_condition(self._stoichiometric_matrix_reduced, self._kinetic_order_matrix_reduced)
+        return self._conditions.closure_condition()
 
     def has_at_most_one_cbe(self) -> bool:
         r"""
@@ -982,17 +988,17 @@ class ReactionNetwork(SageObject):
         and for all rate constants.
         """
         self._update()
-        return uniqueness_condition(self._stoichiometric_matrix_reduced, self._kinetic_order_matrix_reduced)
+        return self._conditions.uniqueness_condition()
 
     def _face_condition(self) -> bool:
         r"""Check whether the reaction network satisfies the face condition for existence of a unique positive CBE."""
         self._check_network_conditions()
-        return face_condition(self._stoichiometric_matrix_reduced, self._kinetic_order_matrix_reduced)
+        return self._conditions.face_condition()
 
     def _are_subspaces_nondegenerate(self) -> bool:
         r"""Check whether the reaction network satisfies the nondegeneracy condition for existence of a unique positive CBE."""
         self._check_network_conditions()
-        return nondegeneracy_condition(self._stoichiometric_matrix_reduced, self._kinetic_order_matrix_reduced)
+        return self._conditions.nondegeneracy_condition()
 
     def has_exactly_one_cbe(self) -> bool:
         r"""
