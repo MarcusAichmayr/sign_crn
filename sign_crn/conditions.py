@@ -1,12 +1,13 @@
 r"""
-Conditions for polynomial and exponential maps
-==============================================
+Conditions for CBE
+==================
 
-We consider polynomial and exponential maps given by two matrices as in [MHR19]_
-and study conditions for injectivity, bijectivity and robustness.
+We consider conditions for existence and uniqueness of positive complex-balanced equilibria (CBE)
+of (chemical) reaction networks.
+These conditions also describe injectivity and bijectivity
+of polynomial and exponential maps as seen in [MHR19]_.
 
-These matrices also describe a chemical reaction network.
-In this context, the conditions are equivalent to conditions for existence and uniqueness of positive complex-balanced equilibria (CBE).
+In both cases, we apply the conditions to a pair of matrices.
 
 Robustness of existence and uniqueness
 --------------------------------------
@@ -198,8 +199,8 @@ To certify the result, we call::
     sage: nondegeneracy_condition(P, Pt(a=1), certify=True)
     (False, (1, 1, 0, 0, -1, 1))
 
-Hence, the positive support of the vector ``v = (1, 1, 0, 0, -1, 1)`` of ``Pt``
-can be covered by a sign vector ``(++000+)`` corresponding to ``row(P)``.
+Hence, the positive support of the vector ``v = (1, 1, 0, 0, -1, 1)`` in ``row(Pt)``
+can be covered by a sign vector ``(++000+)`` corresponding to ``ker(P)``.
 """
 
 #############################################################################
@@ -488,9 +489,9 @@ def nondegeneracy_condition(kernel_matrix1: Matrix, kernel_matrix2: Matrix, cert
         sage: nondegeneracy_condition(P, Pt, certify=True)
         (True, ([], [[[2, 3]]], [[[[2, 3]], [(--++)]]]))
 
-    In fact, a vector in ``Pt`` with equal positive components on ``[2, 3]``
+    In fact, a vector in the row space of ``Pt`` with equal positive components on ``[2, 3]``
     corresponding to ``(--++)`` can be fully covered by covectors.
-    However, this vector would not satisfy the support condition.
+    However, this vector would not satisfy the condition on the support.
     """
     non_negative_cocircuits = non_negative_circuits_from_matrix(kernel_matrix1)
 
