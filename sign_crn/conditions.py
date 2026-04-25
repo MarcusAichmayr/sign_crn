@@ -151,7 +151,7 @@ However, the face condition is violated::
     False
 
 Now, we consider a map involving a parameter.
-(see Example 20 of [MHR19]_)::
+(Compare with Example 20 of [MHR19]_)::
 
     sage: var("a")
     a
@@ -453,7 +453,7 @@ def nondegeneracy_condition(kernel_matrix1: Matrix, kernel_matrix2: Matrix, cert
     can be covered by nonnegative cocircuits.
 
     If ``certify`` is true, a list is returned to certify the result.
-    (see the examples)
+    (See the examples.)
 
     EXAMPLES:
 
@@ -728,7 +728,7 @@ class ConditionsCRN(SageObject):
         can be covered by nonnegative cocircuits.
 
         If ``certify`` is true, a list is returned to certify the result.
-        (see the examples)
+        (See the examples.)
         """
         return nondegeneracy_condition(self.stoichiometric_kernel_matrix, self.kinetic_order_kernel_matrix, certify=certify)
 
