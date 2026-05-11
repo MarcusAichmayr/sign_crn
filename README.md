@@ -1,4 +1,4 @@
-# Sign vector conditions for chemical reaction networks
+# SignCRN
 
 ## Description
 
