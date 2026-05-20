@@ -9,7 +9,7 @@ def readfile(filename):
 
 setup(
     name="sign_crn",
-    version="2.2",
+    version="2.3",
     description="SageMath package for (chemical) reaction networks using sign vector conditions",
     long_description=readfile("README.md"),
     long_description_content_type="text/markdown",
