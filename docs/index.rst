@@ -1,9 +1,9 @@
-Sign vector conditions for chemical reaction networks
-=====================================================
+SignCRN
+=======
 
 To install this package, visit the `repository on GitHub <https://github.com/MarcusAichmayr/sign_crn>`_.
 
-This package provides functionality for analyzing reaction networks,
+This package provides functionality for analyzing reaction networks via sign vector conditions,
 such as checking weak reversibility, computing deficiencies, and verifying conditions
 for unique positive complex-balanced equilibria (CBE) based on [MHR19]_.
 See [AMR24]_ for more details.
