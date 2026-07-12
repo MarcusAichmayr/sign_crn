@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as follows."
+
+title: "SignCRN"
+type: software
+authors:
+  - family-names: "Aichmayr"
+    given-names: "Marcus S."
+    orcid: "https://orcid.org/0009-0008-8362-2644"
+
+version: "2.5"
+date-released: "2026-07-12"
+
+repository-code: "https://github.com/MarcusAichmayr/sign_crn"
+url: "https://pypi.org/project/sign-crn/"
+
+identifiers:
+  - type: doi
+    value: todo
+
+license: "GPL-3.0"

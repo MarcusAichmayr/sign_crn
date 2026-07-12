@@ -9,7 +9,7 @@ def readfile(filename):
 
 setup(
     name="sign_crn",
-    version="2.4",
+    version="2.5",
     description="SageMath package for (chemical) reaction networks using sign vector conditions",
     long_description=readfile("README.md"),
     long_description_content_type="text/markdown",
@@ -34,7 +34,7 @@ setup(
         "sign vector conditions",
     ],
     packages=["sign_crn"],
-    install_requires=["elementary_vectors>=2.2", "sign_vectors>=1.2", "certlin>=1.2"],
+    install_requires=["elementary_vectors>=2.4", "sign_vectors>=1.4", "certlin>=1.4"],
     extras_require={
         "passagemath": [
             "passagemath-symbolics",
